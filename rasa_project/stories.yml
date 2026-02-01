@@ -1,0 +1,89 @@
+version: "3.1"
+
+stories:
+
+- story: initial conversation
+  steps:
+    - intent: greet
+    - action: action_greet_and_restart
+    - intent: emergency
+    - action: action_clear_slots
+    - action: utter_type_emergency
+
+- story: restart mid-conversation
+  steps:
+    - intent: restart
+    - action: action_restart
+
+- story: earthquake path
+  steps:
+    - intent: report_earthquake
+    - action: action_set_crisis_type
+    - slot_was_set:
+        - crisis_type: earthquake
+    - action: crisis_form
+    - active_loop: crisis_form
+    - active_loop: null
+    - action: action_calculate_risk_level
+    - action: utter_offer_more_steps
+    - intent: more_steps_yes
+    - action: action_finish_and_guide
+
+- story: flood path
+  steps:
+    - intent: report_flood
+    - action: action_set_crisis_type
+    - slot_was_set:
+        - crisis_type: flood
+    - action: crisis_form
+    - active_loop: crisis_form
+    - active_loop: null
+    - action: action_calculate_risk_level
+    - action: utter_offer_more_steps
+    - intent: more_steps_no
+    - action: utter_goodbye
+
+- story: fire path complete
+  steps:
+    - intent: report_fire
+    - action: action_set_crisis_type
+    - slot_was_set:
+        - crisis_type: fire
+    - action: crisis_form
+    - active_loop: crisis_form
+    - active_loop: null
+    - action: action_calculate_risk_level
+    - action: utter_offer_more_steps
+    - intent: more_steps_yes
+    - action: action_finish_and_guide
+
+- story: power outage path
+  steps:
+    - intent: report_power_outage
+    - action: action_set_crisis_type
+    - slot_was_set:
+        - crisis_type: power_outage
+    - action: crisis_form
+    - active_loop: crisis_form
+    - active_loop: null
+    - action: action_calculate_risk_level
+    - action: utter_offer_more_steps
+
+- story: mobility and injury assessment
+  steps:
+    - intent: report_earthquake
+    - action: action_set_crisis_type
+    - action: crisis_form
+    - active_loop: crisis_form
+    - active_loop: null
+    - action: action_calculate_risk_level
+    - action: utter_offer_more_steps
+    - intent: request_human
+    - action: utter_human_handover
+
+- story: goodbye after conversation
+  steps:
+    - intent: more_steps_yes
+    - action: action_finish_and_guide
+    - intent: goodbye
+    - action: utter_goodbye

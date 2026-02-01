@@ -1,0 +1,88 @@
+services:
+  # Rasa Server - NLU and Core
+  crisis-rasa-server:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.rasa
+    container_name: crisis-rasa-server
+    ports:
+      - "5005:5005"
+    volumes:
+      - ./rasa_project:/app
+      - rasa_models:/app/models
+    environment:
+      - RASA_SERVER_HOST=0.0.0.0
+      - RASA_SERVER_PORT=5005
+      - RASA_ACTION_ENDPOINT=http://crisis-action-server:5055/webhook
+    # Override the rasa entrypoint to use shell commands
+    entrypoint: []
+    command: >
+      sh -c "
+        echo 'Training Rasa model...' &&
+        rasa train --config config.yml --domain domain.yml --data . &&
+        echo 'Starting Rasa server...' &&
+        rasa run --model models --enable-api --cors '*' --debug --endpoints endpoints.yml
+      "
+    depends_on:
+      - crisis-action-server
+    networks:
+      - crisis-network
+    restart: unless-stopped
+
+  # Action Server - Custom Python Actions
+  crisis-action-server:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.actions
+    container_name: crisis-action-server
+    ports:
+      - "5055:5055"
+    volumes:
+      - ./rasa_project:/app
+    environment:
+      - PYTHONPATH=/app
+      - ACTION_SERVER_HOST=0.0.0.0
+      - ACTION_SERVER_PORT=5055
+    # Use the correct rasa-sdk command for action server
+    command: >
+      sh -c "
+        echo 'Starting Action Server...' &&
+        python -m rasa_sdk --actions actions --port 5055 --debug
+      "
+    networks:
+      - crisis-network
+    restart: unless-stopped
+
+  # Streamlit Frontend
+  crisis-frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.streamlit
+    container_name: crisis-frontend
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./frontend:/app
+    environment:
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - RASA_SERVER_URL=http://crisis-rasa-server:5005
+    command: >
+      sh -c "
+        echo 'Starting Streamlit app...' &&
+        streamlit run streamlit_app.py --server.address=0.0.0.0 --server.port=8501
+      "
+    depends_on:
+      - crisis-rasa-server
+    networks:
+      - crisis-network
+    restart: unless-stopped
+
+networks:
+  crisis-network:
+    driver: bridge
+    name: crisis-response-network
+
+volumes:
+  rasa_models:
+    name: crisis-rasa-models

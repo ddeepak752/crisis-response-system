@@ -1,0 +1,40 @@
+# Crisis Response Chatbot - Actions Server Dockerfile
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Rasa SDK and other dependencies
+RUN pip install --no-cache-dir \
+    rasa-sdk==3.6.2 \
+    requests==2.31.0 \
+    geopy==2.4.1 \
+    python-dateutil==2.8.2 \
+    validators==0.22.0
+
+# Create requirements file for actions
+COPY rasa_project/requirements-actions.txt /app/requirements-actions.txt
+
+# Copy the actions
+COPY rasa_project/ /app/
+
+# Create non-root user
+RUN groupadd -r rasa && useradd -r -g rasa rasa
+RUN chown -R rasa:rasa /app
+USER rasa
+
+# Expose action server port
+EXPOSE 5055
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost:5055/health || exit 1
+
+# Default command
+CMD ["rasa", "run", "actions", "--port", "5055", "--debug"]

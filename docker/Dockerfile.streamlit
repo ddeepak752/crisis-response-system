@@ -1,0 +1,39 @@
+# Crisis Response Chatbot - Streamlit Frontend Dockerfile
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Streamlit and dependencies
+RUN pip install --no-cache-dir \
+    streamlit==1.28.1 \
+    requests==2.31.0 \
+    pandas==2.1.4 \
+    numpy==1.24.3
+
+# Copy requirements file
+COPY frontend/requirements-frontend.txt /app/requirements-frontend.txt
+
+# Copy the frontend application
+COPY frontend/ /app/
+
+# Create non-root user
+RUN groupadd -r streamlit && useradd -r -g streamlit streamlit
+RUN chown -R streamlit:streamlit /app
+USER streamlit
+
+# Expose Streamlit port
+EXPOSE 8501
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost:8501/_stcore/health || exit 1
+
+# Default command
+CMD ["streamlit", "run", "streamlit_app.py", "--server.address=0.0.0.0", "--server.port=8501"]

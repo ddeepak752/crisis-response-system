@@ -1,0 +1,524 @@
+version: "3.1"
+
+nlu:
+
+# -------------------------
+# BASIC / START
+# -------------------------
+- intent: greet
+  examples: |
+    - hi
+    - hello
+    - hey
+    - hey there
+    - hello bot
+    - hi assistant
+    - yo
+    - good morning
+    - good evening
+    - good afternoon
+    - are you there?
+    - anyone there?
+    - can you help me?
+    - i need help
+    - i need assistance
+    - please help
+    - hi hi
+    - hello there
+    - hey buddy
+    - hey assistant
+    - hi chatbot
+    - good day
+    - is anyone here
+    - are you online?
+    - i need urgent help
+
+- intent: goodbye
+  examples: |
+    - bye
+    - goodbye
+    - see you
+    - see you later
+    - thanks bye
+    - thank you bye
+    - i have to go
+    - i'm leaving
+    - end chat
+    - stop now
+    - exit
+    - quit
+    - close chat
+    - end the conversation
+    - i'm done
+    - that's all
+    - bye bye
+    - talk later
+    - goodbye for now
+    - ok bye
+    - ok thanks bye
+    - stop chatting
+    - end this
+    - i want to exit
+    - finish
+
+- intent: emergency
+  examples: |
+    - emergency
+    - i have an emergency
+    - help me now
+    - urgent help
+    - i need urgent assistance
+    - crisis situation
+    - i am in danger
+    - something bad happened
+    - i need help quickly
+    - please help
+    - start assessment
+    - emergency please
+    - i need emergency help
+    - this is urgent
+    - i need help immediately
+    - urgent situation
+    - respond now
+    - i'm in trouble
+    - it's an emergency situation
+    - start the emergency flow
+    - activate emergency mode
+    - emergency mode
+    - start emergency
+    - help urgent
+    - i need crisis support
+
+- intent: restart
+  examples: |
+    - restart
+    - start over
+    - reset
+    - reset chat
+    - new conversation
+    - begin again
+    - clear chat
+    - restart conversation
+    - can we restart?
+    - restart please
+    - reset everything
+    - wipe the conversation
+    - start fresh
+    - restart session
+    - clear messages
+    - reset the session
+    - begin from scratch
+    - do a restart
+    - start from beginning
+    - refresh conversation
+    - restart the bot
+    - reset the conversation
+    - new session
+    - restart now
+    - clear everything
+
+# -------------------------
+# CRISIS TYPE SELECTION
+# -------------------------
+- intent: report_earthquake
+  examples: |
+    - earthquake
+    - there is an earthquake
+    - the ground is shaking
+    - i feel shaking
+    - building is shaking
+    - tremor happening
+    - aftershock right now
+    - everything is vibrating
+    - i think it's an earthquake
+    - strong shaking here
+    - quake started
+    - seismic shaking
+    - my house is shaking
+    - shaking indoors
+    - shaking outside
+    - the floor is moving
+    - walls are shaking
+    - things are falling
+    - the bed is shaking
+    - the room is shaking
+    - intense shaking right now
+    - i hear rumbling and shaking
+    - there is a tremor
+    - earthquake happening now
+    - big tremor
+    - i think there is a quake
+
+- intent: report_flood
+  examples: |
+    - flood
+    - flooding here
+    - water is rising
+    - my area is flooded
+    - there is water everywhere
+    - flash flood
+    - river overflowed
+    - street is underwater
+    - water entered my house
+    - basement is flooding
+    - heavy rain and flooding
+    - drainage overflow
+    - flood warning
+    - we are trapped due to water
+    - cars are floating
+    - water level is increasing fast
+    - the road is flooded
+    - water is coming inside
+    - our house is flooded
+    - floods in my neighborhood
+    - there's flooding in my street
+    - flood situation
+    - water everywhere outside
+    - overflowing water
+    - water is coming up fast
+
+- intent: report_fire
+  examples: |
+    - fire
+    - there is a fire
+    - building is on fire
+    - i see flames
+    - i smell smoke
+    - smoke in my apartment
+    - kitchen fire
+    - electrical fire
+    - wildfire nearby
+    - fire in the corridor
+    - something is burning
+    - fire alarm is on
+    - thick smoke everywhere
+    - fire emergency
+    - flames in my building
+    - my kitchen is burning
+    - smoke is filling the room
+    - apartment fire
+    - the building has smoke
+    - fire in the staircase
+    - burning smell and smoke
+    - flames outside my window
+    - smoke from hallway
+    - the flat is on fire
+    - i think the house is burning
+
+- intent: report_power_outage
+  examples: |
+    - power outage
+    - no electricity
+    - electricity is gone
+    - blackout
+    - power cut
+    - lights went out
+    - power is down
+    - no power in my area
+    - outage in my building
+    - electricity not working
+    - we have a blackout
+    - complete blackout
+    - no lights and no internet
+    - power failure
+    - the power just went out
+    - power is out
+    - no current
+    - the electricity went off
+    - the whole area has no power
+    - we lost power suddenly
+    - outage happening now
+    - no electricity since morning
+    - lights are off everywhere
+    - power cut in apartment
+    - no power at home
+
+# -------------------------
+# LOCATION INPUT (INTENT + ENTITY)
+# -------------------------
+- intent: provide_location
+  examples: |
+    - I am in [Berlin](location)
+    - I'm in [Frankfurt](location)
+    - There is [Hamburg](location)
+    - I'm at [Alexanderplatz](location)
+    - [Munich](location)
+    - [Cologne](location)
+    - [Düsseldorf](location)
+    - [Stuttgart](location)
+    - [Leipzig](location)
+    - [Bremen](location)
+    - [Dresden](location)
+    - [Hannover](location)
+    - [Nuremberg](location)
+    - I am at [Berlin Hauptbahnhof](location)
+    - I'm near [Marienplatz](location)
+    - I'm at [Frankfurt Hauptbahnhof](location)
+    - I'm close to [Hamburg Altona](location)
+    - I'm in [Berlin Mitte](location)
+    - I'm in [Prenzlauer Berg](location)
+    - I'm at [Zoo station Berlin](location)
+    - I'm near [Kölner Dom](location)
+    - I am at [Zeil Frankfurt](location)
+    - I'm around [Frauenkirche Dresden](location)
+    - My location is [Alexanderplatz Berlin](location)
+    - I am in [Hamburg, Germany](location)
+
+# -------------------------
+# PEOPLE COUNT
+# -------------------------
+- intent: provide_people_count
+  examples: |
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6 people
+    - there are 2 of us
+    - i am alone
+    - just me
+    - we are 3 people
+    - total 4 persons
+    - about 5 people
+    - around 10 people
+    - family of 4
+    - only 1 person
+    - two people
+    - three of us
+    - four people here
+    - i'm with 2 friends
+    - we are a group of 6
+    - about 8 people here
+    - nearly 12 people
+    - more than 5 people
+    - just 2
+    - 7
+    - 9
+    - me and my friend
+
+# -------------------------
+# VULNERABILITY
+# -------------------------
+- intent: provide_vulnerability
+  examples: |
+    - none
+    - no vulnerable people
+    - nobody vulnerable
+    - children
+    - 2 children
+    - one child
+    - elderly
+    - 1 elderly person
+    - pregnant woman
+    - a pregnant lady is here
+    - baby with us
+    - senior citizen with us
+    - disabled person here
+    - wheelchair user
+    - someone is sick
+    - someone has asthma
+    - there is a child with us
+    - two kids are here
+    - one elderly person is here
+    - an old man is with us
+    - a baby is here
+    - disabled person with us
+    - someone is on wheelchair
+    - there is a pregnant woman here
+    - medical needs
+    - one child and one elderly
+
+# -------------------------
+# MOBILITY STATUS
+# -------------------------
+- intent: provide_mobility_status
+  examples: |
+    - yes
+    - no
+    - unsure
+    - i can move
+    - i cannot move
+    - i can't move
+    - we can move
+    - we cannot move
+    - stuck here
+    - trapped
+    - not sure
+    - maybe
+    - i can walk
+    - i cannot walk
+    - unable to move
+    - i'm able to move
+    - i'm not able to move
+    - i can evacuate
+    - i cannot evacuate
+    - i might move
+    - uncertain
+    - i don't know
+    - yes i can move
+    - no i cannot move
+    - maybe i can move
+
+# -------------------------
+# INJURY STATUS
+# -------------------------
+- intent: provide_injury_status
+  examples: |
+    - yes
+    - no
+    - unsure
+    - injured
+    - someone is injured
+    - i am injured
+    - bleeding
+    - there is bleeding
+    - hurt
+    - wounded
+    - not injured
+    - nobody injured
+    - no injuries
+    - maybe injured
+    - i'm not sure if injured
+    - i think someone is hurt
+    - i have a cut
+    - broken leg
+    - head injury
+    - pain in chest
+    - difficulty breathing
+    - unconscious person
+    - injured badly
+    - minor injury
+    - not hurt
+
+# -------------------------
+# MORE STEPS / SAFETY GUIDE
+# -------------------------
+- intent: more_steps_yes
+  examples: |
+    - yes
+    - yes please
+    - show more steps
+    - give me safety guide
+    - tell me what to do
+    - more instructions
+    - continue
+    - safety tips please
+    - i need the protocol
+    - give detailed steps
+    - ok continue
+    - please continue
+    - give me more guidance
+    - more steps
+    - tell me the next steps
+    - show the next steps
+    - provide more details
+    - i want more instructions
+    - keep going
+    - yes show me more
+    - give me full safety protocol
+    - can you continue the guide
+    - more help please
+    - show full instructions
+
+- intent: more_steps_no
+  examples: |
+    - no
+    - no thanks
+    - that's enough
+    - stop instructions
+    - not needed
+    - i don't need more steps
+    - just info only
+    - ok done
+    - end guidance
+    - no more
+    - stop now
+    - that's all
+    - no need
+    - don't continue
+    - i'm fine
+    - enough steps
+    - stop the guide
+    - no further steps
+    - no additional instructions
+    - i don't want more
+    - stop here
+    - that is sufficient
+    - ok stop
+    - no, end it
+    - no further help
+
+# -------------------------
+# HUMAN HANDOFF / HELP
+# -------------------------
+- intent: request_human
+  examples: |
+    - connect me to emergency services
+    - call emergency
+    - send help
+    - i need an operator
+    - connect me to a human
+    - talk to a real person
+    - dispatch help
+    - ambulance please
+    - police help
+    - fire brigade please
+    - i need rescue
+    - contact authorities
+    - i can't handle this
+    - i need someone now
+    - call 112 for me
+    - call 911 for me
+    - please send ambulance
+    - i need police now
+    - i need firefighters
+    - connect me to emergency operator
+    - i need urgent rescue
+    - connect me to a dispatcher
+    - i need real help
+    - send rescue team
+    - emergency operator now
+    - connect me urgently
+
+# -------------------------
+# OUT OF SCOPE
+# -------------------------
+- intent: out_of_scope
+  examples: |
+    - tell me a joke
+    - what is your name
+    - who made you
+    - can you write a poem
+    - what's the weather tomorrow
+    - i want pizza
+    - play music
+    - book a restaurant
+    - who is the president
+    - random question
+    - sing a song
+    - tell me a story
+    - do you like movies
+    - what time is it
+    - explain quantum physics
+    - teach me python
+    - what is your favorite color
+    - can you do my homework
+    - give me investment advice
+    - how do i lose weight
+    - translate this sentence
+    - write an essay for me
+    - generate an image
+    - what is the capital of france
+    - tell me about bitcoin
+
+# -------------------------
+# FALLBACK
+# -------------------------
+- intent: nlu_fallback
+  examples: |
+    - asdasdasd
+    - qwertyuiop
+    - ....
+    - ????
+    - blah blah

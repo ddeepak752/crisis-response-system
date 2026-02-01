@@ -1,0 +1,205 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - emergency
+  - restart
+  - report_earthquake
+  - report_flood
+  - report_fire
+  - report_power_outage
+  - provide_location
+  - provide_people_count
+  - provide_vulnerability
+  - provide_mobility_status
+  - provide_injury_status
+  - more_steps_yes
+  - more_steps_no
+  - request_human
+  - out_of_scope
+  - nlu_fallback
+
+entities:
+  - location
+  - people_count
+  - vulnerability
+  - mobility_status
+  - injury_status
+
+slots:
+  crisis_type:
+    type: categorical
+    values: ["earthquake", "flood", "fire", "power_outage"]
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  location:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: location
+      - type: from_text
+        conditions:
+          - active_loop: crisis_form
+            requested_slot: location
+
+  location_verified:
+    type: bool
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  location_lat:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  location_lon:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  shelter_suggestions:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  people_count:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: crisis_form
+            requested_slot: people_count
+
+  vulnerability:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: crisis_form
+            requested_slot: vulnerability
+
+  mobility_status:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: crisis_form
+            requested_slot: mobility_status
+
+  injury_status:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: crisis_form
+            requested_slot: injury_status
+
+  risk_level:
+    type: categorical
+    values: ["CRITICAL", "HIGH", "MEDIUM", "LOW"]
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  risk_score:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  vulnerability_summary:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+forms:
+  crisis_form:
+    required_slots:
+      - location
+      - people_count
+      - vulnerability
+      - mobility_status
+      - injury_status
+
+responses:
+  utter_greet:
+    - text: "Hi. I'm the Crisis Response Assistant. If this is life-threatening, call your local emergency number now. Type: emergency to begin."
+
+  utter_type_emergency:
+    - text: "Which type of emergency?"
+      buttons:
+        - title: "Earthquake / Shaking"
+          payload: "/report_earthquake"
+        - title: "Flood / Water rising"
+          payload: "/report_flood"
+        - title: "Fire / Smoke"
+          payload: "/report_fire"
+        - title: "Power outage"
+          payload: "/report_power_outage"
+
+  utter_ask_location:
+    - text: "What's your current location? (city + nearby landmark is best)"
+
+  utter_ask_people_count:
+    - text: "How many people need help including you? (e.g., 1, 2, 3)"
+
+  utter_ask_vulnerability:
+    - text: "Any vulnerable people? (children / elderly / pregnant / medical needs / none)"
+
+  utter_ask_mobility_status:
+    - text: "Can you move to a safer place? (yes / no / unsure)"
+
+  utter_ask_injury_status:
+    - text: "Are you or anyone with you injured? (yes / no / unsure)"
+
+  utter_offer_more_steps:
+    - text: "What would you like to do next?"
+      buttons:
+        - title: "🆘 Connect to Emergency Services"
+          payload: "/request_human"
+        - title: "📋 Get Safety Instructions"
+          payload: "/more_steps_yes"
+        - title: "ℹ️ Information Only"
+          payload: "/more_steps_no"
+
+  utter_human_handover:
+    - text: "🚨 CONNECTING TO EMERGENCY DISPATCH 🚨\n\nYour information has been forwarded:\n• Location: {location}\n• People: {people_count}\n• Crisis: {crisis_type}\n• Mobility: {mobility_status}\n• Injuries: {injury_status}\n\nEmergency operator will contact you immediately."
+
+  utter_goodbye:
+    - text: "Stay safe.\n📞 Remember: Call 112/911 for life-threatening situations.\nType 'emergency' if you need help again."
+
+  utter_select_crisis_type:
+    - text: "Please select your emergency type from the buttons, or type: earthquake, flood, fire, or power outage."
+
+  utter_out_of_scope:
+    - text: "I can only help with emergency assessment (earthquake, flood, fire, power outage). Type: emergency to begin."
+
+  utter_fallback:
+    - text: "I didn't understand. Please rephrase or type: emergency"
+
+actions:
+  - action_restart
+  - action_greet_and_restart
+  - action_clear_slots
+  - action_set_crisis_type
+  - action_calculate_risk_level
+  - action_finish_and_guide
+  - validate_crisis_form
+  - action_fallback_router
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

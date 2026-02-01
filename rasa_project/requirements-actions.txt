@@ -1,0 +1,8 @@
+# Crisis Response Chatbot - Actions Server Requirements
+rasa-sdk==3.6.2
+requests==2.31.0
+geopy==2.4.1
+python-dateutil==2.8.2
+validators==0.22.0
+typing-extensions==4.8.0
+pydantic==1.10.13

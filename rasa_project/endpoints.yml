@@ -1,0 +1,7 @@
+# Crisis Response Chatbot - Docker Endpoints Configuration
+action_endpoint:
+  url: "http://crisis-action-server:5055/webhook"
+
+# Optional: Add model server endpoint if needed in future
+# models:
+#   url: "http://crisis-model-server:5000/models"
