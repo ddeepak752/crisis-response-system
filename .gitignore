@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+venv/
+
+# Rasa
+.rasa/
+models/
+results/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# Secrets
+credentials.yml
+.env
+
+# IDE
+.vscode/
+.idea/
